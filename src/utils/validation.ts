@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { FieldType } from "./enum";
+import { FieldType, validationConst } from "./enum";
 
 export const addPrimaryValidation = (type: string, value: string) => {
   let schema;
@@ -53,13 +53,13 @@ export const addCustomValidation = (
         break;
       case FieldType.String:
         let stringSchema: yup.StringSchema<any> = yup.string();
-        // const r: any[] = [
-        //   {
-        //     method: "matches",
-        //     args: [/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{3,}$/],
-        //     message: "invalid format",
-        //   },
-        // ];
+
+        // add special data fix for yup matches method
+        validationRules.map((rule: any) => {
+          if (rule.method === validationConst.yup_match_method) {
+            rule.args = [new RegExp(rule.args)];
+          }
+        });
 
         validationRules.forEach((rule) => {
           const method: keyof yup.StringSchema<any> = rule.method;

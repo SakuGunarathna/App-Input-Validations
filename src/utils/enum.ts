@@ -6,5 +6,5 @@ export enum FieldType {
 }
 
 export enum validationConst {
-    label_regex = 'String match regex'
+    yup_match_method = 'matches'
 }
